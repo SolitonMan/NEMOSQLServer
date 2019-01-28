@@ -30,7 +30,7 @@ class AccountForm(ModelForm):
 class TaskForm(ModelForm):
 	problem_category = ModelChoiceField(queryset=TaskCategory.objects.filter(stage=TaskCategory.Stage.INITIAL_ASSESSMENT), required=False, label="Problem category")
 	resolution_category = ModelChoiceField(queryset=TaskCategory.objects.filter(stage=TaskCategory.Stage.COMPLETION), required=False, label="Resolution category")
-	action = ChoiceField(choices=[('create', 'create'), ('update', 'update'), ('resolve', 'resolve')], label="Action")
+	action = ChoiceField(choices=[('create', 'create'), ('update', 'update'), ('resolve', 'resolve')], label='Action')
 	description = CharField(required=False, label="Description")
 
 	class Meta:
@@ -269,13 +269,13 @@ class ReservationAbuseForm(Form):
 
 class EmailBroadcastForm(Form):
 	subject = CharField(required=False)
-	color = ChoiceField(choices=((bootstrap_primary_color('info'), 'info'), (bootstrap_primary_color('success'), 'success'), (bootstrap_primary_color('warning'), 'warning'), (bootstrap_primary_color('danger'), 'danger')))
+	color = ChoiceField(choices=[(bootstrap_primary_color('info'), 'info'), (bootstrap_primary_color('success'), 'success'), (bootstrap_primary_color('warning'), 'warning'), (bootstrap_primary_color('danger'), 'danger')], label='')
 	title = CharField(required=False)
 	greeting = CharField(required=False)
 	contents = CharField(required=False)
 	copy_me = BooleanField(initial=True)
 
-	audience = ChoiceField([('tool', 'tool'), ('project', 'project'), ('account', 'account'), ('all', 'all')])
+	audience = ChoiceField(choices=[('tool', 'tool'), ('project', 'project'), ('account', 'account'), ('all', 'all')], label='')
 	selection = IntegerField()
 	only_active_users = BooleanField(initial=True)
 

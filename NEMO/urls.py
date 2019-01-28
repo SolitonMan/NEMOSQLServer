@@ -199,7 +199,7 @@ urlpatterns = [
 
 if settings.ALLOW_CONDITIONAL_URLS:
 	urlpatterns += [
-		url(r'^admin/', include(admin.site.urls)),
+		url(r'^admin/', admin.site.urls),
 		url(r'^api/', include(router.urls)),
 
 		# Tablet area access

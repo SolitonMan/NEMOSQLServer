@@ -1,3 +1,4 @@
+from logging import getLogger
 from copy import deepcopy
 from datetime import timedelta
 from http import HTTPStatus
@@ -10,7 +11,7 @@ from django.db.models import Q
 from django.http import HttpResponseBadRequest, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from django.views.decorators.http import logger, require_GET, require_POST
+from django.views.decorators.http import require_GET, require_POST
 
 from NEMO.forms import nice_errors, CommentForm
 from NEMO.models import Comment, Configuration, ConfigurationHistory, Project, Reservation, StaffCharge, Task, TaskCategory, TaskStatus, Tool, UsageEvent, User
@@ -19,6 +20,7 @@ from NEMO.views.policy import check_policy_to_enable_tool, check_policy_to_disab
 from NEMO.widgets.dynamic_form import DynamicForm
 from NEMO.widgets.tool_tree import ToolTree
 
+logger = getLogger(__name__)
 
 @login_required
 @require_GET
@@ -194,6 +196,7 @@ def enable_tool(request, tool_id, user_id, project_id, staff_charge):
 @login_required
 @require_POST
 def disable_tool(request, tool_id):
+
 
 	if not settings.ALLOW_CONDITIONAL_URLS:
 		return HttpResponseBadRequest('Tool control is only available on campus.')

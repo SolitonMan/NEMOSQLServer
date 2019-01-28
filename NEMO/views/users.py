@@ -1,3 +1,4 @@
+from logging import getLogger
 from datetime import timedelta
 from http import HTTPStatus
 from urllib.parse import urljoin
@@ -8,12 +9,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from django.views.decorators.http import require_GET, require_http_methods, require_POST, logger
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from NEMO.admin import record_local_many_to_many_changes, record_active_state
 from NEMO.forms import UserForm
 from NEMO.models import User, Project, Tool, PhysicalAccessLevel, Reservation, StaffCharge, UsageEvent, AreaAccessRecord, ActivityHistory
 
+logger = getLogger(__name__)
 
 @staff_member_required(login_url=None)
 @require_GET
