@@ -35,7 +35,7 @@ class RemoteUserAuthenticationBackend(RemoteUserBackend):
 class NginxKerberosAuthorizationHeaderAuthenticationBackend(ModelBackend):
 	""" The web server performs Kerberos authentication and passes the user name in via the HTTP_AUTHORIZATION header. """
 
-	def authenticate(self, request, username=None, password=None, **keyword_arguments):
+	def authenticate(request, self, username=None, password=None, **keyword_arguments):
 		# Perform any custom security checks below.
 		# Returning None blocks the user's access.
 		username = self.clean_username(request.META.get('HTTP_AUTHORIZATION', None))
@@ -75,7 +75,7 @@ class LDAPAuthenticationBackend(ModelBackend):
 	""" This class provides LDAP authentication against an LDAP or Active Directory server. """
 
 	@method_decorator(sensitive_post_parameters('password'))
-	def authenticate(self, request, username=None, password=None, **keyword_arguments):
+	def authenticate(request, self, username=None, password=None, **keyword_arguments):
 		if not username or not password:
 			return None
 

@@ -25,7 +25,7 @@ setup(
 	],
 	install_requires=[
 		'cryptography>=2.3.1',
-		'Django>=2.1.0',
+		'Django==2.1.7',
 		'django-filter>=2.1.0',
 		'djangorestframework>=3.8.2',
 		'ldap3>=2.5.1',
