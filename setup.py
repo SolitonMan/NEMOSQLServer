@@ -29,6 +29,7 @@ setup(
 		'django-filter>=2.1.0',
 		'djangorestframework>=3.8.2',
 		'ldap3>=2.5.1',
+		'django-auth-ldap>=1.6.0',
 		'python-dateutil>=2.7.3',
 		'requests>=2.20.0',
 		'Pillow>=5.2.0',
