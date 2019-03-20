@@ -4,9 +4,9 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views.static import serve
 from rest_framework import routers
-from django.contrib.staticfiles.storage import staticfiles_storage
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic.base import RedirectView
+#from django.contrib.staticfiles.storage import staticfiles_storage
+#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+#from django.views.generic.base import RedirectView
 
 from NEMO.views import abuse, accounts_and_projects, alerts, api, area_access, authentication, calendar, configuration_agenda, consumables, contact_staff, customization, email, feedback, get_projects, history, jumbotron, kiosk, landing, maintenance, mobile, usage, news, qualifications, remote_work, resources, safety, sidebar, staff_charges, status_dashboard, stockroom, tasks, tool_control, training, tutorials, users, forgot_password, billing, consultation
 
@@ -35,13 +35,13 @@ urlpatterns = [
 	re_path(r'^forgot_password_process/$', forgot_password.forgot_password_process, name='forgot_password_process'),
 	re_path(r'^password_reset_token/(?P<token>[a-zA-Z0-9]+)/$', forgot_password.password_reset_token, name='password_reset_token'),
 
-	re_path(
-		r'^favicon.ico$',
-		RedirectView.as_view(
-			url=staticfiles_storage.url('favicon.ico'),
-			permanent=False),
-		name="favicon"
-	),
+#	re_path(
+#		r'^favicon.ico$',
+#		RedirectView.as_view(
+#			url=staticfiles_storage.url('favicon.ico'),
+#			permanent=False),
+#		name="favicon"
+#	),
 
 	# Root URL defaults to the calendar page on desktop systems, and the mobile homepage for mobile devices:
 	re_path(r'^$', landing.landing, name='landing'),
@@ -281,4 +281,4 @@ if settings.DEBUG:
 		]
 	except ImportError:
 		pass
-	urlpatterns += staticfiles_urlpatterns()
+	#urlpatterns += staticfiles_urlpatterns()
