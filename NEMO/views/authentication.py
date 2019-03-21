@@ -12,8 +12,8 @@ from django.urls import reverse, resolve
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.decorators.http import require_http_methods, require_GET
-from ldap3 import Tls, Server, Connection, AUTO_BIND_TLS_BEFORE_BIND, SIMPLE
-from ldap3.core.exceptions import LDAPBindError, LDAPExceptionError
+#from ldap3 import Tls, Server, Connection, AUTO_BIND_TLS_BEFORE_BIND, SIMPLE
+#from ldap3.core.exceptions import LDAPBindError, LDAPExceptionError
 
 from NEMO.models import User
 from NEMO.views.customization import get_media_file_contents
@@ -71,42 +71,42 @@ class NginxKerberosAuthorizationHeaderAuthenticationBackend(ModelBackend):
 		return b64decode(pieces[1]).decode().partition(':')[0]
 
 
-class LDAPAuthenticationBackend(ModelBackend):
-	""" This class provides LDAP authentication against an LDAP or Active Directory server. """
-
-	@method_decorator(sensitive_post_parameters('password'))
-	def authenticate(request, self, username=None, password=None, **keyword_arguments):
-		if not username or not password:
-			return None
-
-		# The user must exist in the database
-		try:
-			user = User.objects.get(username=username)
-		except User.DoesNotExist:
-			logger.warning(f"Username {username} attempted to authenticate with LDAP, but that username does not exist in the NEMO database. The user was denied access.")
-			return None
-
-		# The user must be marked active.
-		if not user.is_active:
-			logger.warning(f"User {username} successfully authenticated with LDAP, but that user is marked inactive in the NEMO database. The user was denied access.")
-			return None
-
-		for server in settings.LDAP_SERVERS:
-			try:
-				t = Tls(validate=CERT_REQUIRED, version=PROTOCOL_TLSv1_2, ca_certs_file=server['certificate'])
-				s = Server(server['url'], port=636, use_ssl=True, tls=t)
-				c = Connection(s, user='{}\\{}'.format(server['domain'], username), password=password, auto_bind=AUTO_BIND_TLS_BEFORE_BIND, authentication=SIMPLE)
-				c.unbind()
-				# At this point the user successfully authenticated to at least one LDAP server.
-				return user
-			except LDAPBindError as e:
-				logger.warning(f"User {username} attempted to authenticate with LDAP, but entered an incorrect password. The user was denied access.")
-				pass  # When this error is caught it means the username and password were invalid against the LDAP server.
-			except LDAPExceptionError as e:
-				exception(e)
-
-		# The user did not successfully authenticate to any of the LDAP servers.
-		return None
+#class LDAPAuthenticationBackend(ModelBackend):
+#	""" This class provides LDAP authentication against an LDAP or Active Directory server. """
+#
+#	@method_decorator(sensitive_post_parameters('password'))
+#	def authenticate(request, self, username=None, password=None, **keyword_arguments):
+#		if not username or not password:
+#			return None
+#
+#		# The user must exist in the database
+#		try:
+#			user = User.objects.get(username=username)
+#		except User.DoesNotExist:
+#			logger.warning(f"Username {username} attempted to authenticate with LDAP, but that username does not exist in the NEMO database. The user was denied access.")
+#			return None
+#
+#		# The user must be marked active.
+#		if not user.is_active:
+#			logger.warning(f"User {username} successfully authenticated with LDAP, but that user is marked inactive in the NEMO database. The user was denied access.")
+#			return None
+#
+#		for server in settings.LDAP_SERVERS:
+#			try:
+#				t = Tls(validate=CERT_REQUIRED, version=PROTOCOL_TLSv1_2, ca_certs_file=server['certificate'])
+#				s = Server(server['url'], port=636, use_ssl=True, tls=t)
+#				c = Connection(s, user='{}\\{}'.format(server['domain'], username), password=password, auto_bind=AUTO_BIND_TLS_BEFORE_BIND, authentication=SIMPLE)
+#				c.unbind()
+#				# At this point the user successfully authenticated to at least one LDAP server.
+#				return user
+#			except LDAPBindError as e:
+#				logger.warning(f"User {username} attempted to authenticate with LDAP, but entered an incorrect password. The user was denied access.")
+#				pass  # When this error is caught it means the username and password were invalid against the LDAP server.
+#			except LDAPExceptionError as e:
+#				exception(e)
+#
+#		# The user did not successfully authenticate to any of the LDAP servers.
+#		return None
 
 
 @require_http_methods(['GET', 'POST'])

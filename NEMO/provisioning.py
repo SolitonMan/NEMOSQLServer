@@ -14,8 +14,8 @@ from cryptography.hazmat.primitives.hashes import SHA256
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
 from cryptography.x509 import NameAttribute, NameOID, DNSName, CertificateSigningRequestBuilder, Name, SubjectAlternativeName
 from django.utils.crypto import get_random_string
-from ldap3 import Tls, Server, Connection, AUTO_BIND_TLS_BEFORE_BIND, SIMPLE
-from ldap3.core.exceptions import LDAPBindError, LDAPExceptionError
+#from ldap3 import Tls, Server, Connection, AUTO_BIND_TLS_BEFORE_BIND, SIMPLE
+#from ldap3.core.exceptions import LDAPBindError, LDAPExceptionError
 from datetime import timedelta, datetime
 from django.template import Template, Context
 from django.utils import timezone
@@ -137,25 +137,25 @@ def query_public_key():
 				print(f'Socket error: {error}')
 
 
-def test_ldap_authentication():
-	""" Opens an encrypted connection (using only TLS 1.2) to an LDAP directory (such as Active Directory) and tests authentication """
-	name = input("DNS name or IP address = ")
-	domain = input("Domain = ")
-	username = input("Username = ")
-	password = getpass("Password = ")
-	certificate = input("Path to public key certificate = ")
-	try:
-		t = Tls(validate=CERT_REQUIRED, version=PROTOCOL_TLSv1_2, ca_certs_file=certificate)
-		s = Server(name, port=636, use_ssl=True, tls=t)
-		c = Connection(s, user='{}\\{}'.format(domain, username), password=password, auto_bind=AUTO_BIND_TLS_BEFORE_BIND, authentication=SIMPLE)
-		c.unbind()
-		# At this point the user successfully authenticated to at least one LDAP server.
-		print("Authentication successful!")
-	except LDAPBindError:
-		pass  # When this error is caught it means the username and password were invalid against the LDAP server.
-	except LDAPExceptionError as error:
-		print("A problem was encountered during authentication:\n")
-		print(error)
+#def test_ldap_authentication():
+#	""" Opens an encrypted connection (using only TLS 1.2) to an LDAP directory (such as Active Directory) and tests authentication """
+#	name = input("DNS name or IP address = ")
+#	domain = input("Domain = ")
+#	username = input("Username = ")
+#	password = getpass("Password = ")
+#	certificate = input("Path to public key certificate = ")
+#	try:
+#		t = Tls(validate=CERT_REQUIRED, version=PROTOCOL_TLSv1_2, ca_certs_file=certificate)
+#		s = Server(name, port=636, use_ssl=True, tls=t)
+#		c = Connection(s, user='{}\\{}'.format(domain, username), password=password, auto_bind=AUTO_BIND_TLS_BEFORE_BIND, authentication=SIMPLE)
+#		c.unbind()
+#		# At this point the user successfully authenticated to at least one LDAP server.
+#		print("Authentication successful!")
+#	except LDAPBindError:
+#		pass  # When this error is caught it means the username and password were invalid against the LDAP server.
+#	except LDAPExceptionError as error:
+#		print("A problem was encountered during authentication:\n")
+#		print(error)
 
 
 def generate_tls_keys():

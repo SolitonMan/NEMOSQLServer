@@ -1,9 +1,14 @@
 FROM ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update
+
+RUN apt-get update --fix-missing
+RUN apt-get -y upgrade
+
 RUN apt-get install -y libssl1.0.0 libssl-dev
 RUN apt-get install -y curl
+RUN apt-get install -y libsasl2-dev libldap2-dev
+RUN apt-get install -y slapd ldap-utils
 
 RUN apt-get install -y -q python3-pip python3-dev python3-django
 
@@ -12,7 +17,11 @@ RUN dpkg-reconfigure --frontend noninteractive tzdata
 RUN ln -s /usr/bin/python3 /usr/local/bin/python
 RUN pip3 install --upgrade pip
 
-# Intall NEMO (in the current directory) and Gunicorn
+# Install LDAP support
+RUN pip install python-ldap
+RUN pip install django-auth-ldap
+
+# Install NEMO (in the current directory) and Gunicorn
 COPY . /nemo/
 
 
@@ -40,7 +49,7 @@ ENV PYTHONPATH "/nemo/"
 
 EXPOSE 8000/tcp
 
-RUN apt-get update && apt-get install -y dos2unix
+RUN apt-get install -y dos2unix
 
 COPY start_NEMO_in_Docker.sh /usr/local/bin/
 RUN dos2unix /usr/local/bin/start_NEMO_in_Docker.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
