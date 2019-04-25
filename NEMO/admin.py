@@ -104,7 +104,7 @@ class ToolAdminForm(forms.ModelForm):
 	class Meta:
 		model = Tool
 		fields = '__all__'
-
+	
 	qualified_users = forms.ModelMultipleChoiceField(
 		queryset=User.objects.all(),
 		required=False,
@@ -222,7 +222,7 @@ class ProjectAdminForm(forms.ModelForm):
 	class Meta:
 		model = Project
 		fields = '__all__'
-
+	
 	members = forms.ModelMultipleChoiceField(
 		queryset=User.objects.all(),
 		required=False,
@@ -236,7 +236,7 @@ class ProjectAdminForm(forms.ModelForm):
 		super(ProjectAdminForm, self).__init__(*args, **kwargs)
 		if self.instance.pk:
 			self.fields['members'].initial = self.instance.user_set.all()
-
+	
 
 @register(Project)
 class ProjectAdmin(admin.ModelAdmin):
